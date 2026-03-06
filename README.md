@@ -1,4 +1,4 @@
-# Bd-Mutant7 Portfolio
+# Bd-Mutant7 Portfolio  👉 [![Live Demo](https://img.shields.io/badge/Live-Demo-green)](https://bd-mutant7-portifolio-82ra.vercel.app/) 👈
 
 This is the source code repository for my personal portfolio website. It's a simple, static site designed to showcase my projects and skills.
 
@@ -25,7 +25,7 @@ This portfolio is built as a lightweight and fast-loading website. It is automat
 
 You can view the live portfolio by visiting the website associated with this repository.
 
-[![Live Demo](https://img.shields.io/badge/Live-Demo-green)](https://bd-mutant7-portifolio-82ra.vercel.app/)
+
 
 ## 🤝 Connect
 
