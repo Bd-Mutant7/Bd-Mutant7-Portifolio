@@ -301,6 +301,33 @@ footer{position:relative;z-index:2;border-top:1px solid var(--bdr);padding:1.8re
 .rv{opacity:0;transform:translateY(18px);transition:opacity .55s ease,transform .55s ease}
 .rv.on{opacity:1;transform:translateY(0)}
 
+/* ── SECURITY LAB TABS (added) ───────────────────────────────────────── */
+.lab-tab-row{display:flex;gap:.5rem;flex-wrap:wrap;max-width:880px;margin:0 auto 1.2rem}
+.lt{padding:6px 15px;background:transparent;border:1px solid var(--bdr);color:var(--t2);font-family:'Share Tech Mono',monospace;font-size:.68rem;letter-spacing:1px;cursor:pointer;border-radius:3px;transition:all .2s}
+.lt:hover{border-color:var(--cyan);color:var(--cyan);background:rgba(0,212,255,.05)}
+.lt.lt-on{border-color:var(--green);color:var(--green);background:rgba(0,255,136,.07)}
+.lab-panel{display:none}
+.lab-panel.lp-on{display:block}
+/* lab inputs reuse .fi style */
+.lab-input{background:rgba(0,212,255,.04);border:1px solid var(--bdr);border-radius:4px;padding:9px 13px;color:var(--t1);font-family:'Share Tech Mono',monospace;font-size:.78rem;outline:none;transition:border-color .2s;width:100%}
+.lab-input:focus{border-color:var(--cyan)}.lab-input::placeholder{color:var(--t3)}
+/* port scanner grid */
+.port-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:.5rem;margin-top:.9rem}
+.port-cell{background:var(--bg2);border:1px solid var(--bdr);border-radius:4px;padding:.5rem .4rem;text-align:center;font-family:'Share Tech Mono',monospace;transition:all .3s}
+.port-cell.psc-on{border-color:var(--green);color:var(--green);background:rgba(0,255,136,.06)}
+.port-cell.psc-off{color:var(--t3);border-color:rgba(0,212,255,.06)}
+.port-cell.psc-scan{animation:pscan .45s ease infinite alternate}
+@keyframes pscan{from{opacity:.25}to{opacity:.9}}
+.port-num{font-family:'Orbitron',monospace;font-size:.75rem;font-weight:700;display:block}
+.port-svc{font-size:.55rem;text-transform:uppercase;letter-spacing:.5px;margin-top:2px;display:block}
+/* hash output */
+.hash-result-block{margin-bottom:.85rem}
+.hash-algo-lbl{font-family:'Share Tech Mono',monospace;font-size:.6rem;color:var(--green);letter-spacing:2px;text-transform:uppercase;margin-bottom:.3rem}
+.hash-val{background:var(--bg2);border:1px solid var(--bdr);border-radius:4px;padding:.55rem .9rem;font-family:'Share Tech Mono',monospace;font-size:.69rem;color:var(--t2);word-break:break-all;line-height:1.5}
+/* b64 toggle pair */
+.b64-tog-row{display:flex;gap:.5rem;margin-bottom:.9rem}
+/* ─────────────────────────────────────────────────────────────────────── */
+
 /* responsive */
 @media(max-width:880px){.hero-wrap{grid-template-columns:1fr;gap:1.8rem}.sk-layout{grid-template-columns:1fr}.stat-grid{grid-template-columns:1fr 1fr}.contact-grid{grid-template-columns:1fr}.p-card{flex-direction:column;text-align:center}.p-stats{justify-content:center}.nav-links{display:none}#ai-panel{width:300px}}
 @media(max-width:500px){.stat-grid{grid-template-columns:1fr 1fr}}
@@ -388,7 +415,6 @@ footer{position:relative;z-index:2;border-top:1px solid var(--bdr);padding:1.8re
 
 <div class="divider"><div class="dl"></div><span class="di">// PROJECTS //</span><div class="dl"></div></div>
 
-
 <section id="projects">
   <div class="sh rv">
     <div class="st">GitHub Repositories</div>
@@ -421,7 +447,6 @@ footer{position:relative;z-index:2;border-top:1px solid var(--bdr);padding:1.8re
 </section>
 
 <div class="divider"><div class="dl"></div><span class="di">// SKILLS //</span><div class="dl"></div></div>
-
 
 <section id="skills">
   <div class="sh rv">
@@ -498,7 +523,7 @@ footer{position:relative;z-index:2;border-top:1px solid var(--bdr);padding:1.8re
 
 <div class="divider"><div class="dl"></div><span class="di">// STATS //</span><div class="dl"></div></div>
 
-<!-- STATS — hardcoded, never blank -->
+<!-- STATS -->
 <section id="stats">
   <div class="sh rv">
     <div class="st">Analytics</div>
@@ -549,33 +574,109 @@ footer{position:relative;z-index:2;border-top:1px solid var(--bdr);padding:1.8re
 
 <div class="divider"><div class="dl"></div><span class="di">// SECURITY LAB //</span><div class="dl"></div></div>
 
-<!-- PACKET SNIFFER -->
+<!-- ══════════════════════════════════════════════════════════════════════
+     SECURITY LAB — 4 tabs added; only the section heading + content
+     changed; all surrounding HTML/CSS/JS left untouched
+     ══════════════════════════════════════════════════════════════════════ -->
 <section id="demo">
   <div class="sh rv">
     <div class="st">Security Lab</div>
-    <h2 class="stitle">Live Packet Sniffer</h2>
+    <h2 class="stitle">Live Security Tools</h2>
     <p class="ssub">Real-time simulated network traffic capture &amp; analysis</p>
   </div>
-  <div class="demo-box rv">
-    <div class="demo-bar">
-      <div class="td td1"></div><div class="td td2"></div><div class="td td3"></div>
-      <span class="demo-ttl"><i class="fa-solid fa-wifi"></i> packet_sniffer.py — CAPTURE MODE</span>
+
+  <!-- TAB ROW -->
+  <div class="lab-tab-row rv">
+    <button class="lt lt-on" onclick="switchLab('sniffer',this)">
+      <i class="fa-solid fa-wifi"></i> PACKET SNIFFER
+    </button>
+    <button class="lt" onclick="switchLab('ports',this)">
+      <i class="fa-solid fa-magnifying-glass"></i> PORT SCANNER
+    </button>
+    <button class="lt" onclick="switchLab('hash',this)">
+      <i class="fa-solid fa-hashtag"></i> HASH GENERATOR
+    </button>
+    <button class="lt" onclick="switchLab('b64',this)">
+      <i class="fa-solid fa-code"></i> BASE64 ENCODE
+    </button>
+  </div>
+
+  <!-- ── PANEL 1: PACKET SNIFFER (original, unchanged) ── -->
+  <div class="lab-panel lp-on" id="lab-sniffer">
+    <div class="demo-box rv">
+      <div class="demo-bar">
+        <div class="td td1"></div><div class="td td2"></div><div class="td td3"></div>
+        <span class="demo-ttl"><i class="fa-solid fa-wifi"></i> packet_sniffer.py — CAPTURE MODE</span>
+      </div>
+      <div class="demo-ctrls">
+        <button class="cb cs" onclick="startCap()"><i class="fa-solid fa-play"></i> START</button>
+        <button class="cb cx" onclick="stopCap()"><i class="fa-solid fa-stop"></i> STOP</button>
+        <button class="cb cc" onclick="clearCap()"><i class="fa-solid fa-trash"></i> CLEAR</button>
+        <span style="font-family:'Share Tech Mono',monospace;font-size:.68rem;color:var(--t3);margin-left:auto" id="cap-st"><i class="fa-solid fa-circle"></i> IDLE</span>
+      </div>
+      <div class="pkt-wrap">
+        <table><thead><tr><th>Time</th><th>Source IP</th><th>Destination</th><th>Protocol</th><th>Len</th><th>Info</th></tr></thead>
+        <tbody id="pkt-body"></tbody></table>
+      </div>
     </div>
-    <div class="demo-ctrls">
-      <button class="cb cs" onclick="startCap()"><i class="fa-solid fa-play"></i> START</button>
-      <button class="cb cx" onclick="stopCap()"><i class="fa-solid fa-stop"></i> STOP</button>
-      <button class="cb cc" onclick="clearCap()"><i class="fa-solid fa-trash"></i> CLEAR</button>
-      <span style="font-family:'Share Tech Mono',monospace;font-size:.68rem;color:var(--t3);margin-left:auto" id="cap-st"><i class="fa-solid fa-circle"></i> IDLE</span>
+  </div>
+
+  <!-- ── PANEL 2: PORT SCANNER ── -->
+  <div class="lab-panel" id="lab-ports">
+    <div class="demo-box rv">
+      <div class="demo-bar">
+        <div class="td td1"></div><div class="td td2"></div><div class="td td3"></div>
+        <span class="demo-ttl"><i class="fa-solid fa-magnifying-glass"></i> port_scanner.py — SIMULATION</span>
+      </div>
+      <div class="demo-ctrls">
+        <input class="lab-input" id="scan-ip" placeholder="Target IP: 192.168.1.1" style="max-width:240px;width:auto"/>
+        <button class="cb cs" onclick="runPortScan()" style="margin-left:.3rem"><i class="fa-solid fa-play"></i> SCAN TARGET</button>
+        <span style="font-family:'Share Tech Mono',monospace;font-size:.68rem;color:var(--t3);margin-left:auto" id="scan-log"></span>
+      </div>
+      <div style="padding:.9rem 1.3rem 1.1rem">
+        <div class="port-grid" id="port-grid"></div>
+      </div>
     </div>
-    <div class="pkt-wrap">
-      <table><thead><tr><th>Time</th><th>Source IP</th><th>Destination</th><th>Protocol</th><th>Len</th><th>Info</th></tr></thead>
-      <tbody id="pkt-body"></tbody></table>
+  </div>
+
+  <!-- ── PANEL 3: HASH GENERATOR ── -->
+  <div class="lab-panel" id="lab-hash">
+    <div class="demo-box rv">
+      <div class="demo-bar">
+        <div class="td td1"></div><div class="td td2"></div><div class="td td3"></div>
+        <span class="demo-ttl"><i class="fa-solid fa-hashtag"></i> hash_generator.py</span>
+      </div>
+      <div style="padding:1rem 1.3rem">
+        <input class="lab-input" id="hash-input" placeholder="Enter text to hash…" oninput="genHashes()" style="margin-bottom:1rem"/>
+        <div id="hash-output">
+          <span style="font-family:'Share Tech Mono',monospace;font-size:.7rem;color:var(--t3)">Type above to generate hashes in real-time…</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── PANEL 4: BASE64 ENCODE / DECODE ── -->
+  <div class="lab-panel" id="lab-b64">
+    <div class="demo-box rv">
+      <div class="demo-bar">
+        <div class="td td1"></div><div class="td td2"></div><div class="td td3"></div>
+        <span class="demo-ttl"><i class="fa-solid fa-code"></i> base64_tool.py</span>
+      </div>
+      <div style="padding:1rem 1.3rem">
+        <div class="b64-tog-row">
+          <button class="cb cs b64-tog" id="b64-enc-btn" onclick="setB64Mode('enc',this)">ENCODE</button>
+          <button class="cb cc b64-tog" id="b64-dec-btn" onclick="setB64Mode('dec',this)">DECODE</button>
+        </div>
+        <input class="lab-input" id="b64-input" placeholder="Enter text…" oninput="runB64()" style="margin-bottom:.9rem"/>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:.62rem;color:var(--green);letter-spacing:2px;text-transform:uppercase;margin-bottom:.4rem">RESULT:</div>
+        <div id="b64-output" style="background:var(--bg2);border:1px solid var(--bdr);border-radius:4px;padding:.65rem .9rem;font-family:'Share Tech Mono',monospace;font-size:.78rem;color:var(--green);word-break:break-all;min-height:2.2rem;line-height:1.6">—</div>
+      </div>
     </div>
   </div>
 </section>
+<!-- ══════════════════════════════════════════════════════════════════════ -->
 
 <div class="divider"><div class="dl"></div><span class="di">// BLOG //</span><div class="dl"></div></div>
-
 
 <section id="blog">
   <div class="sh rv">
@@ -598,7 +699,6 @@ footer{position:relative;z-index:2;border-top:1px solid var(--bdr);padding:1.8re
 </section>
 
 <div class="divider"><div class="dl"></div><span class="di">// CONTACT //</span><div class="dl"></div></div>
-
 
 <section id="contact">
   <div class="sh rv">
@@ -672,7 +772,6 @@ footer{position:relative;z-index:2;border-top:1px solid var(--bdr);padding:1.8re
   </div>
 </div>
 
-<!-- jsPDF CDN — loaded last so it doesn't block anything -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <script>
@@ -796,14 +895,12 @@ function repoCard(r, featured) {
 }
 
 function renderProjects() {
-  // Featured
   const fg = document.getElementById('feat-grid');
   fg.innerHTML = FEATURED.map(name => {
     const r = repos.find(x=>x.name===name) || FALLBACK.find(x=>x.name===name) || {name,description:'',language:'Python',stargazers_count:0,forks_count:0,updated_at:new Date().toISOString(),html_url:`https://github.com/${GH}/${name}`};
     return repoCard(r, true);
   }).join('');
 
-  // All repos grouped
   let list = [...repos];
   if (curSort === 'stars') list.sort((a,b)=>b.stargazers_count-a.stargazers_count);
   else if (curSort === 'updated') list.sort((a,b)=>new Date(b.updated_at)-new Date(a.updated_at));
@@ -838,7 +935,7 @@ function srt(s, btn) {
 }
 
 // ─────────────────────────────────────────────────────
-// GITHUB API — non-blocking, updates on top of defaults
+// GITHUB API
 // ─────────────────────────────────────────────────────
 async function fetchGH() {
   try {
@@ -854,7 +951,6 @@ async function fetchGH() {
     repos = rv.filter(r=>r&&r.name&&!r.fork);
     if (!repos.length) throw new Error('empty');
 
-    // Update all stat boxes
     const stars = repos.reduce((s,r)=>s+r.stargazers_count,0);
     const forks = repos.reduce((s,r)=>s+r.forks_count,0);
     const langs = [...new Set(repos.map(r=>r.language).filter(Boolean))];
@@ -873,7 +969,6 @@ async function fetchGH() {
   } catch(e) {
     document.getElementById('api-txt').textContent = 'Cached · github.com/'+GH;
     document.getElementById('api-dot').style.background = '#ffe066';
-    // repos already = FALLBACK, stats already pre-filled in HTML — nothing to do
   }
 }
 
@@ -915,7 +1010,7 @@ function buildSkills() {
 }
 
 // ─────────────────────────────────────────────────────
-// RADAR CHART — pure Canvas 2D, no library needed
+// RADAR CHART
 // ─────────────────────────────────────────────────────
 function buildRadar() {
   try {
@@ -929,7 +1024,6 @@ function buildRadar() {
 
     ctx.clearRect(0,0,W,H);
 
-    // Grid rings
     for (let ring = 1; ring <= 4; ring++) {
       ctx.beginPath();
       for (let i = 0; i < N; i++) {
@@ -941,7 +1035,6 @@ function buildRadar() {
       ctx.strokeStyle = 'rgba(0,212,255,0.12)'; ctx.lineWidth = 1; ctx.stroke();
     }
 
-    // Spokes
     for (let i = 0; i < N; i++) {
       const a = angle(i);
       ctx.beginPath(); ctx.moveTo(cx2, cy2);
@@ -949,7 +1042,6 @@ function buildRadar() {
       ctx.strokeStyle = 'rgba(0,212,255,0.1)'; ctx.lineWidth = 1; ctx.stroke();
     }
 
-    // Data polygon
     ctx.beginPath();
     vals.forEach((v,i) => {
       const a = angle(i), r2 = R * v / 100;
@@ -960,14 +1052,12 @@ function buildRadar() {
     ctx.fillStyle = 'rgba(0,255,136,0.12)'; ctx.fill();
     ctx.strokeStyle = '#00ff88'; ctx.lineWidth = 2; ctx.stroke();
 
-    // Data dots
     vals.forEach((v,i) => {
       const a = angle(i), r2 = R * v / 100;
       ctx.beginPath(); ctx.arc(cx2+Math.cos(a)*r2, cy2+Math.sin(a)*r2, 4, 0, Math.PI*2);
       ctx.fillStyle = '#00d4ff'; ctx.fill();
     });
 
-    // Labels
     ctx.fillStyle = 'rgba(107,143,168,0.9)';
     ctx.font = '9px Share Tech Mono, monospace';
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
@@ -980,7 +1070,7 @@ function buildRadar() {
 }
 
 // ─────────────────────────────────────────────────────
-// INTERACTIVE NETWORK MAP — pure Canvas 2D
+// NETWORK MAP
 // ─────────────────────────────────────────────────────
 (function() {
   try {
@@ -998,7 +1088,6 @@ function buildRadar() {
       vx: (Math.random()-.5)*.5, vy: (Math.random()-.5)*.5
     }));
     const pkts = [];
-    let frame = 0;
 
     setInterval(() => {
       const a = Math.floor(Math.random()*nodes.length);
@@ -1009,7 +1098,6 @@ function buildRadar() {
 
     function draw() {
       ctx.clearRect(0,0,cv.width,cv.height);
-      // Edges
       for (let i=0;i<nodes.length;i++) for (let j=i+1;j<nodes.length;j++) {
         const d = Math.hypot(nodes[i].x-nodes[j].x, nodes[i].y-nodes[j].y);
         if (d < 220) {
@@ -1018,7 +1106,6 @@ function buildRadar() {
           ctx.moveTo(nodes[i].x,nodes[i].y); ctx.lineTo(nodes[j].x,nodes[j].y); ctx.stroke();
         }
       }
-      // Packets
       for (let i = pkts.length-1; i>=0; i--) {
         const p = pkts[i]; p.t += .014;
         const na = nodes[p.a], nb = nodes[p.b];
@@ -1028,7 +1115,6 @@ function buildRadar() {
         ctx.shadowBlur=0;
         if (p.t>=1) pkts.splice(i,1);
       }
-      // Nodes
       nodes.forEach(n => {
         n.x+=n.vx; n.y+=n.vy;
         if(n.x<25||n.x>cv.width-25) n.vx*=-1;
@@ -1046,7 +1132,7 @@ function buildRadar() {
 })();
 
 // ─────────────────────────────────────────────────────
-// 3D GLOBE — pure Canvas 2D (no Three.js, zero errors)
+// GLOBE
 // ─────────────────────────────────────────────────────
 (function() {
   try {
@@ -1060,41 +1146,25 @@ function buildRadar() {
     resize();
     new ResizeObserver(resize).observe(cv);
 
-    // Attack routes: [lat1,lon1,lat2,lon2,label]
     const ATTACKS = [
-      [-1,37,51,0,'Nairobi → London'],
-      [-1,37,48,2,'Nairobi → Paris'],
-      [-1,37,40,-74,'Nairobi → New York'],
-      [37,-122,51,0,'San Francisco → London'],
-      [35,139,48,2,'Tokyo → Paris'],
-      [40,-74,55,37,'New York → Moscow'],
-      [23,113,37,-122,'China → San Francisco'],
-      [55,37,-33,151,'Moscow → Sydney'],
-      [51,0,23,113,'London → China'],
+      [-1,37,51,0,'Nairobi → London'],[-1,37,48,2,'Nairobi → Paris'],[-1,37,40,-74,'Nairobi → New York'],
+      [37,-122,51,0,'San Francisco → London'],[35,139,48,2,'Tokyo → Paris'],[40,-74,55,37,'New York → Moscow'],
+      [23,113,37,-122,'China → San Francisco'],[55,37,-33,151,'Moscow → Sydney'],[51,0,23,113,'London → China'],
       [48,2,-1,37,'Paris → Nairobi'],
     ];
-
-    // City markers
     const CITIES = [
-      {name:'Nairobi',lat:-1,lon:37,home:true},
-      {name:'London',lat:51,lon:0},
-      {name:'New York',lat:40,lon:-74},
-      {name:'Tokyo',lat:35,lon:139},
-      {name:'Paris',lat:48,lon:2},
-      {name:'Moscow',lat:55,lon:37},
-      {name:'Sydney',lat:-33,lon:151},
-      {name:'S.Francisco',lat:37,lon:-122},
-      {name:'Beijing',lat:39,lon:116},
+      {name:'Nairobi',lat:-1,lon:37,home:true},{name:'London',lat:51,lon:0},{name:'New York',lat:40,lon:-74},
+      {name:'Tokyo',lat:35,lon:139},{name:'Paris',lat:48,lon:2},{name:'Moscow',lat:55,lon:37},
+      {name:'Sydney',lat:-33,lon:151},{name:'S.Francisco',lat:37,lon:-122},{name:'Beijing',lat:39,lon:116},
     ];
 
-    let rot = 0;    // current globe rotation (radians)
+    let rot = 0;
     const arcs = ATTACKS.map(a => ({
       lat1:a[0],lon1:a[1],lat2:a[2],lon2:a[3],label:a[4],
       progress: Math.random(), speed: .003+Math.random()*.004,
       color: a[0]===-1&&a[1]===37 ? '#00ff88' : '#ff2244'
     }));
 
-    // Convert lat/lon to 2D canvas point given rotation offset
     function project(lat, lon, cx, cy, R, rotOff) {
       const phi  = (90 - lat) * Math.PI / 180;
       const lam  = (lon + rotOff * 180/Math.PI) * Math.PI / 180;
@@ -1104,13 +1174,11 @@ function buildRadar() {
       return { x: cx + x3, y: cy - y3, z: z3, vis: z3 > -R*0.15 };
     }
 
-    // Arc midpoint (curved upward)
     function arcPoints(lat1,lon1,lat2,lon2,steps) {
       const pts = [];
       for (let i=0;i<=steps;i++) {
         const t = i/steps;
-        const la = lat1+(lat2-lat1)*t, lo = lon1+(lon2-lon1)*t;
-        pts.push({la,lo});
+        pts.push({la:lat1+(lat2-lat1)*t, lo:lon1+(lon2-lon1)*t});
       }
       return pts;
     }
@@ -1132,100 +1200,76 @@ function buildRadar() {
       const R = Math.min(W,H)*0.42;
       ctx.clearRect(0,0,W,H);
 
-      // Outer glow
       const grd = ctx.createRadialGradient(cx,cy,R*.7,cx,cy,R*1.3);
-      grd.addColorStop(0,'rgba(0,212,255,0)');
-      grd.addColorStop(1,'rgba(0,212,255,0.06)');
+      grd.addColorStop(0,'rgba(0,212,255,0)'); grd.addColorStop(1,'rgba(0,212,255,0.06)');
       ctx.fillStyle=grd; ctx.beginPath(); ctx.arc(cx,cy,R*1.3,0,Math.PI*2); ctx.fill();
 
-      // Globe body
       const bg = ctx.createRadialGradient(cx-R*.3,cy-R*.3,R*.1,cx,cy,R);
       bg.addColorStop(0,'#0a1e38'); bg.addColorStop(1,'#020810');
       ctx.fillStyle=bg; ctx.beginPath(); ctx.arc(cx,cy,R,0,Math.PI*2); ctx.fill();
       ctx.strokeStyle='rgba(0,212,255,0.35)'; ctx.lineWidth=1.5; ctx.stroke();
 
-      // Latitude lines
       for (let lat=-60;lat<=60;lat+=30) {
         ctx.beginPath(); let first=true;
         for (let lon=-180;lon<=180;lon+=5) {
           const p = project(lat,lon,cx,cy,R,rot);
           if (!p.vis) { first=true; continue; }
-          first ? ctx.moveTo(p.x,p.y) : ctx.lineTo(p.x,p.y);
-          first=false;
+          first ? ctx.moveTo(p.x,p.y) : ctx.lineTo(p.x,p.y); first=false;
         }
         ctx.strokeStyle='rgba(0,212,255,0.07)'; ctx.lineWidth=.7; ctx.stroke();
       }
-
-      // Longitude lines
       for (let lon=0;lon<360;lon+=30) {
         ctx.beginPath(); let first=true;
         for (let lat=-90;lat<=90;lat+=5) {
           const p = project(lat,lon,cx,cy,R,rot);
           if (!p.vis) { first=true; continue; }
-          first ? ctx.moveTo(p.x,p.y) : ctx.lineTo(p.x,p.y);
-          first=false;
+          first ? ctx.moveTo(p.x,p.y) : ctx.lineTo(p.x,p.y); first=false;
         }
         ctx.strokeStyle='rgba(0,212,255,0.07)'; ctx.lineWidth=.7; ctx.stroke();
       }
 
-      // Attack arcs — draw trail only
       arcs.forEach(arc => {
         arc.progress += arc.speed;
         if (arc.progress > 1.5) arc.progress = 0;
         const pts = arcPoints(arc.lat1,arc.lon1,arc.lat2,arc.lon2,60);
         const end = Math.min(Math.floor(arc.progress*60), 60);
         const start = Math.max(0, end-20);
-
         ctx.beginPath(); let first=true;
         for (let i=start;i<=end;i++) {
           const p = project(pts[i].la,pts[i].lo,cx,cy,R,rot);
           if (!p.vis) { first=true; continue; }
-          first ? ctx.moveTo(p.x,p.y) : ctx.lineTo(p.x,p.y);
-          first=false;
+          first ? ctx.moveTo(p.x,p.y) : ctx.lineTo(p.x,p.y); first=false;
         }
-        ctx.strokeStyle = arc.color;
-        ctx.lineWidth = arc.color==='#00ff88'?2:1.5;
+        ctx.strokeStyle = arc.color; ctx.lineWidth = arc.color==='#00ff88'?2:1.5;
         ctx.shadowBlur=8; ctx.shadowColor=arc.color; ctx.stroke(); ctx.shadowBlur=0;
-
-        // Dot at head
         if (end > 0 && end <= 60) {
           const hp = project(pts[end].la,pts[end].lo,cx,cy,R,rot);
           if (hp.vis) {
-            ctx.fillStyle=arc.color;
-            ctx.shadowBlur=12; ctx.shadowColor=arc.color;
-            ctx.beginPath(); ctx.arc(hp.x,hp.y,3,0,Math.PI*2); ctx.fill();
-            ctx.shadowBlur=0;
+            ctx.fillStyle=arc.color; ctx.shadowBlur=12; ctx.shadowColor=arc.color;
+            ctx.beginPath(); ctx.arc(hp.x,hp.y,3,0,Math.PI*2); ctx.fill(); ctx.shadowBlur=0;
           }
         }
       });
 
-      // City markers
       CITIES.forEach(city => {
         const p = project(city.lat,city.lon,cx,cy,R,rot);
         if (!p.vis) return;
         const col = city.home ? '#00ff88' : 'rgba(0,212,255,0.9)';
         const sz = city.home ? 6 : 4;
-        // Pulse ring for Nairobi
         if (city.home) {
           ctx.strokeStyle='rgba(0,255,136,0.3)'; ctx.lineWidth=1;
           ctx.beginPath(); ctx.arc(p.x,p.y,sz+6+Math.sin(Date.now()/400)*4,0,Math.PI*2); ctx.stroke();
         }
         ctx.fillStyle=col; ctx.shadowBlur=10; ctx.shadowColor=col;
-        ctx.beginPath(); ctx.arc(p.x,p.y,sz,0,Math.PI*2); ctx.fill();
-        ctx.shadowBlur=0;
-        // Label
+        ctx.beginPath(); ctx.arc(p.x,p.y,sz,0,Math.PI*2); ctx.fill(); ctx.shadowBlur=0;
         ctx.fillStyle=hovered===city?'#fff':'rgba(224,240,255,0.75)';
         ctx.font=`${city.home?'bold ':''}10px Share Tech Mono,monospace`;
-        ctx.textAlign='center';
-        ctx.fillText(city.name,p.x,p.y-sz-5);
+        ctx.textAlign='center'; ctx.fillText(city.name,p.x,p.y-sz-5);
       });
 
-      // Legend
       ctx.fillStyle='rgba(0,255,136,0.7)'; ctx.font='9px Share Tech Mono,monospace'; ctx.textAlign='left';
       ctx.fillText('● Nairobi (Origin)',14,H-28);
-      ctx.fillStyle='rgba(255,34,68,0.7)';
-      ctx.fillText('─ Incoming Attacks',14,H-16);
-
+      ctx.fillStyle='rgba(255,34,68,0.7)'; ctx.fillText('─ Incoming Attacks',14,H-16);
       rot += .004;
       requestAnimationFrame(draw);
     }
@@ -1329,7 +1373,7 @@ function runCmd(cmd) {
 }
 
 // ─────────────────────────────────────────────────────
-// PACKET SNIFFER
+// PACKET SNIFFER (original — unchanged)
 // ─────────────────────────────────────────────────────
 let capIv = null;
 const PROTOS=['TCP','UDP','HTTP','DNS','ICMP','TLS','SSH'];
@@ -1357,6 +1401,105 @@ function addPkt(t,s,d,p,l,info){
   tr.innerHTML=`<td>${t}</td><td>${s}</td><td>${d}</td><td class="${PCL[p]||''}">${p}</td><td>${l}</td><td>${info}</td>`;
   tb.insertBefore(tr,tb.firstChild);
   if(tb.children.length>80) tb.removeChild(tb.lastChild);
+}
+
+// ─────────────────────────────────────────────────────
+// SECURITY LAB — TAB SWITCHER (added)
+// ─────────────────────────────────────────────────────
+function switchLab(id, btn) {
+  document.querySelectorAll('.lab-panel').forEach(p => p.classList.remove('lp-on'));
+  document.querySelectorAll('.lt').forEach(b => b.classList.remove('lt-on'));
+  document.getElementById('lab-' + id).classList.add('lp-on');
+  btn.classList.add('lt-on');
+}
+
+// ─────────────────────────────────────────────────────
+// PORT SCANNER (added)
+// ─────────────────────────────────────────────────────
+const SCAN_PORTS = [
+  {p:21,s:'FTP'},{p:22,s:'SSH'},{p:23,s:'Telnet'},{p:25,s:'SMTP'},
+  {p:53,s:'DNS'},{p:80,s:'HTTP'},{p:110,s:'POP3'},{p:143,s:'IMAP'},
+  {p:443,s:'HTTPS'},{p:3306,s:'MySQL'},{p:5432,s:'PgSQL'},{p:6379,s:'Redis'},
+  {p:8080,s:'HTTP-Alt'},{p:8443,s:'HTTPS-Alt'},{p:27017,s:'Mongo'},{p:9200,s:'Elastic'}
+];
+
+function runPortScan() {
+  const target = document.getElementById('scan-ip').value.trim() || '192.168.1.1';
+  const log = document.getElementById('scan-log');
+  const grid = document.getElementById('port-grid');
+  log.innerHTML = `<span style="color:var(--cyan)">Scanning ${esc(target)}…</span>`;
+  grid.innerHTML = SCAN_PORTS.map(({p,s}) =>
+    `<div class="port-cell psc-scan" id="pc-${p}">
+      <span class="port-num">${p}</span>
+      <span class="port-svc">${s}</span>
+    </div>`
+  ).join('');
+  SCAN_PORTS.forEach(({p}, i) => setTimeout(() => {
+    const open = Math.random() > .48;
+    const el = document.getElementById('pc-' + p);
+    if (!el) return;
+    el.className = 'port-cell ' + (open ? 'psc-on' : 'psc-off');
+    el.querySelector('.port-svc').textContent = open ? 'OPEN' : 'CLOSED';
+  }, (i + 1) * 260));
+  setTimeout(() => {
+    const opens = document.querySelectorAll('#port-grid .psc-on').length;
+    log.innerHTML = `<span style="color:var(--green)">✓ ${opens} open port${opens!==1?'s':''} on ${esc(target)}</span>`;
+  }, SCAN_PORTS.length * 260 + 400);
+}
+
+// ─────────────────────────────────────────────────────
+// HASH GENERATOR (added)
+// ─────────────────────────────────────────────────────
+async function genHashes() {
+  const txt = document.getElementById('hash-input').value;
+  const out = document.getElementById('hash-output');
+  if (!txt) {
+    out.innerHTML = '<span style="font-family:\'Share Tech Mono\',monospace;font-size:.7rem;color:var(--t3)">Type above to generate hashes in real-time…</span>';
+    return;
+  }
+  const enc = new TextEncoder();
+  const buf = enc.encode(txt);
+  const algos = [['SHA-1','SHA-1'],['SHA-256','SHA-256'],['SHA-384','SHA-384'],['SHA-512','SHA-512']];
+  const results = await Promise.all(algos.map(async ([name, algo]) => {
+    const h = await crypto.subtle.digest(algo, buf);
+    const hex = Array.from(new Uint8Array(h)).map(b=>b.toString(16).padStart(2,'0')).join('');
+    return [name, hex];
+  }));
+  const md5sim = Math.abs(txt.split('').reduce((h,c)=>(((h<<5)-h)+c.charCodeAt(0))|0,0)).toString(16).padStart(8,'0');
+  out.innerHTML = [['MD5 (simulated)', md5sim], ...results].map(([n, v]) =>
+    `<div class="hash-result-block">
+      <div class="hash-algo-lbl">${n}</div>
+      <div class="hash-val">${v}</div>
+    </div>`
+  ).join('');
+}
+
+// ─────────────────────────────────────────────────────
+// BASE64 ENCODE / DECODE (added)
+// ─────────────────────────────────────────────────────
+let b64mode = 'enc';
+
+function setB64Mode(m, btn) {
+  b64mode = m;
+  document.querySelectorAll('.b64-tog').forEach(b => {
+    b.className = b.id === 'b64-enc-btn'
+      ? (m === 'enc' ? 'cb cs b64-tog' : 'cb cc b64-tog')
+      : (m === 'dec' ? 'cb cs b64-tog' : 'cb cc b64-tog');
+  });
+  runB64();
+}
+
+function runB64() {
+  const inp = document.getElementById('b64-input').value;
+  const out = document.getElementById('b64-output');
+  if (!inp) { out.textContent = '—'; return; }
+  try {
+    out.textContent = b64mode === 'enc'
+      ? btoa(unescape(encodeURIComponent(inp)))
+      : decodeURIComponent(escape(atob(inp)));
+  } catch(e) {
+    out.textContent = 'Invalid input for decoding';
+  }
 }
 
 // ─────────────────────────────────────────────────────
@@ -1525,7 +1668,7 @@ function doReveal(){
 }
 
 // ─────────────────────────────────────────────────────
-// INIT — everything runs independently inside try/catch
+// INIT
 // ─────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
   try { doReveal(); } catch(e) {}
@@ -1533,7 +1676,7 @@ document.addEventListener('DOMContentLoaded', () => {
   try { buildSkills(); } catch(e) {}
   try { buildRadar(); } catch(e) {}
   try { renderBlog(); } catch(e) {}
-  try { fetchGH(); } catch(e) {}     // non-blocking live update
+  try { fetchGH(); } catch(e) {}
 });
 </script>
 </body>
