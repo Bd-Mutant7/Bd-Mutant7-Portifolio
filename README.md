@@ -2,6 +2,8 @@
 
 This is the source code repository for my personal portfolio website. It's a simple, static site designed to showcase my projects and skills.
 
+[![Support](https://img.shields.io/badge/Support-Paystack-00C3F7?style=for-the-badge&logo=paypal&logoColor=white)](https://paystack.shop/pay/bd-mutant7)
+
 ## ✨ About the Project
 
 This portfolio is built as a lightweight and fast-loading website. It is automatically updated to reflect the latest changes and deployment status.
