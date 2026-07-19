@@ -123,7 +123,10 @@ section{position:relative;z-index:2;padding:76px 5%}
 .cat-hd{font-family:'Orbitron',monospace;font-size:.82rem;font-weight:700;color:var(--cyan);margin-bottom:.9rem;display:flex;align-items:center;gap:.6rem;padding-bottom:.5rem;border-bottom:1px solid var(--bdr)}
 .repo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:.9rem}
 .pc{text-decoration:none;color:inherit;display:block}
-.pc.feat::after{content:'★ FEATURED';position:absolute;top:10px;right:10px;font-family:'Share Tech Mono',monospace;font-size:.52rem;color:var(--green);border:1px solid rgba(0,255,136,.3);padding:2px 5px;border-radius:2px}
+.pc.feat::after{content:'★ FEATURED';position:absolute;top:10px;right:10px;font-family:'Share Tech Mono',monospace;font-size:.52rem;color:var(--green);border:1px solid rgba(0,255,136,.3);padding:2px 5px;border-radius:2px;z-index:2}
+.p-thumb-wrap{margin:-1.4rem -1.4rem .9rem;height:120px;overflow:hidden;background:linear-gradient(135deg,#0a1628,#0f1f3a);position:relative;border-bottom:1px solid var(--bdr)}
+.p-thumb-wrap img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block;opacity:.88;transition:opacity .25s,transform .35s}
+.pc:hover .p-thumb-wrap img{opacity:1;transform:scale(1.04)}
 .p-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:.75rem}
 .ico{width:36px;height:36px;border-radius:5px;background:rgba(0,212,255,.07);border:1px solid var(--bdr);display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0}
 .ico img{width:20px;height:20px;object-fit:contain}
@@ -583,8 +586,8 @@ footer{position:relative;z-index:2;border-top:1px solid var(--bdr);padding:1.8re
 <section id="demo">
   <div class="sh rv">
     <div class="st">Security Lab</div>
-    <h2 class="stitle">Live Security Tools</h2>
-    <p class="ssub">Real-time simulated network traffic capture &amp; analysis</p>
+    <h2 class="stitle">Interactive Security Demos</h2>
+    <p class="ssub">Hands-on, browser-based demos of core security workflows &mdash; built to show how the concepts work, not to replace real tooling like Wireshark or Nmap</p>
   </div>
 
   <div class="lab-tab-row rv">
@@ -625,7 +628,7 @@ footer{position:relative;z-index:2;border-top:1px solid var(--bdr);padding:1.8re
     <div class="demo-box rv">
       <div class="demo-bar">
         <div class="td td1"></div><div class="td td2"></div><div class="td td3"></div>
-        <span class="demo-ttl"><i class="fa-solid fa-magnifying-glass"></i> port_scanner.py — SIMULATION</span>
+        <span class="demo-ttl"><i class="fa-solid fa-magnifying-glass"></i> port_scanner.py — INTERACTIVE DEMO</span>
       </div>
       <div class="demo-ctrls">
         <input class="lab-input" id="scan-ip" placeholder="Target IP: 192.168.1.1" style="max-width:240px;width:auto"/>
@@ -860,6 +863,7 @@ function repoCard(r, featured) {
   const desc = r.description || m.d || 'No description provided.';
   const techs = m.ts ? m.ts.map(t=>`<span style="font-family:'Share Tech Mono',monospace;font-size:.58rem;padding:2px 6px;background:rgba(0,212,255,.05);border:1px solid var(--bdr);border-radius:2px;color:var(--t3)">${esc(t)}</span>`).join('') : '';
   return `<a href="${esc(r.html_url)}" target="_blank" class="pc card${featured?' feat':''}">
+    <div class="p-thumb-wrap"><img src="https://opengraph.githubassets.com/1/${GH}/${esc(r.name)}" alt="${esc(r.name)} preview" loading="lazy" onerror="this.parentElement.style.display='none'"/></div>
     <div class="p-head"><div class="ico">${icon(r)}</div>${badge(c)}</div>
     <div class="pn">${esc(r.name)}</div>
     <p class="pd">${esc(desc)}</p>
